@@ -26,9 +26,32 @@ You are provided with an existing task-management system that uses object-orient
 - In TaskManager javadoc comments discuss how this improves readability and maintainability
 
 ### Step 4: Improve Exception Handling
-- Replace null checks with `Optional`
-- Use `orElseThrow` where appropriate
-- Create meaningful domain-specific exceptions
+This step focuses on replacing old-style null checks with modern `Optional` and custom exceptions.
+
+**4.1 Create a Custom Exception**
+- Create `TaskNotFoundException.java` in the taskmanager package
+- Make it extend `RuntimeException` (or `Exception` if you prefer checked exceptions)
+- Add a constructor that accepts a descriptive message
+
+**4.2 Refactor `TaskRegistry.get()`**
+- Change the return type from `Task` to `Optional<Task>`
+- Wrap the result using `Optional.ofNullable()`
+- This prevents callers from receiving null values
+
+**4.3 Refactor `UpdateTaskCommand.execute()`**
+- Replace the `if (existing == null)` check with `Optional.orElseThrow()`
+- Throw your custom `TaskNotFoundException` when the task doesn't exist
+- Remove the silent failure and `System.err.println()` warning
+- Example:
+```java
+Task existing = registry.get(taskName)
+    .orElseThrow(() -> new TaskNotFoundException("Task '" + taskName + "' not found"));
+```
+
+**4.4 Update Any Other Affected Code**
+- Fix any other places that call `TaskRegistry.get()` to handle the new `Optional<Task>` return type
+- Ensure all tests still pass after these changes
+
 
 ### Step 5: Run and Reflect
 - Run the demo program
