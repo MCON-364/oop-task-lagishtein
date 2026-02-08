@@ -19,12 +19,18 @@ You are provided with an existing task-management system that uses object-orient
 - Explicitly list the permitted implementations
 - Discuss how this improves safety and clarity
 
-### Step 3: Improve Exception Handling
+### Step 3: Refactor TaskManager.run Using Pattern-Matching Switch
+- Replace the `instanceof` chain in `TaskManager.run()` with a pattern-matching `switch`
+- Use JDK 21+ pattern-matching features for cleaner, type-safe code
+- Ensure the behavior remains unchanged
+- In TaskManager javadoc comments discuss how this improves readability and maintainability
+
+### Step 4: Improve Exception Handling
 - Replace null checks with `Optional`
 - Use `orElseThrow` where appropriate
 - Create meaningful domain-specific exceptions
 
-### Step 4: Run and Reflect
+### Step 5: Run and Reflect
 - Run the demo program
 - Verify behavior is unchanged
 - Discuss what became simpler or safer
