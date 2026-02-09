@@ -21,7 +21,7 @@ class CommandHierarchyTest {
                 "AddTaskCommand must be permitted by Command");
         assertTrue(permitted.contains("RemoveTaskCommand"),
                 "RemoveTaskCommand must be permitted by Command");
-        assertTrue(peritted.contains("UpdateTaskCommand"),
+        assertTrue(permitted.contains("UpdateTaskCommand"),
                 "UpdateTaskCommand must be permitted by Command");
     }
 }
