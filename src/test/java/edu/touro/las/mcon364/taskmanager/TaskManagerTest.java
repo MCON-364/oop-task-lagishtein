@@ -4,6 +4,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -28,7 +30,7 @@ class TaskManagerTest {
 
         manager.run(command);
 
-        assertNotNull(registry.get("Test task"), "Task should be added");
+        assertTrue(registry.get("Test task").isPresent(), "Task should be added");
     }
 
     @Test
@@ -39,7 +41,7 @@ class TaskManagerTest {
 
         manager.run(command);
 
-        assertNull(registry.get("Remove me"), "Task should be removed");
+        assertFalse(registry.get("Remove me").isPresent(), "Task should be removed");
     }
 
     @Test
@@ -50,7 +52,9 @@ class TaskManagerTest {
 
         manager.run(command);
 
-        assertEquals(Priority.HIGH, registry.get("Update me").getPriority(),
+        Optional<Task> updated = registry.get("Update me");
+        assertTrue(updated.isPresent(), "Task should exist after update");
+        assertEquals(Priority.HIGH, updated.get().priority(),
                 "Task priority should be updated");
     }
 
@@ -62,9 +66,9 @@ class TaskManagerTest {
         manager.run(new UpdateTaskCommand(registry, "Task 2", Priority.MEDIUM));
         manager.run(new RemoveTaskCommand(registry, "Task 1"));
 
-        assertNull(registry.get("Task 1"), "Task 1 should be removed");
-        assertNotNull(registry.get("Task 2"), "Task 2 should still exist");
-        assertEquals(Priority.MEDIUM, registry.get("Task 2").getPriority(),
+        assertFalse(registry.get("Task 1").isPresent(), "Task 1 should be removed");
+        assertTrue(registry.get("Task 2").isPresent(), "Task 2 should still exist");
+        assertEquals(Priority.MEDIUM, registry.get("Task 2").get().priority(),
                 "Task 2 priority should be updated");
     }
 
@@ -76,8 +80,7 @@ class TaskManagerTest {
         manager.run(new AddTaskCommand(registry, task));
 
         // Should be retrievable from the registry we passed to manager
-        assertNotNull(registry.get("Shared task"),
+        assertTrue(registry.get("Shared task").isPresent(),
                 "Task should be in the shared registry instance");
     }
 }
-
