@@ -52,6 +52,7 @@ Task existing = registry.get(taskName)
 - Fix any other places that call `TaskRegistry.get()` to handle the new `Optional<Task>` return type
 - Ensure all tests still pass after these changes
 
+
 ### Step 5: Run and Reflect
 - Run the demo program
 - Verify behavior is unchanged
